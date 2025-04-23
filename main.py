@@ -1,5 +1,6 @@
 from utils.logging import setup_logger
 from schemas import ResearchRequest, ResearchResponse
+from tools.web_search_tool import get_google_search_tool
 from fastapi import FastAPI, Request, Body
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
@@ -32,7 +33,23 @@ async def health_check():
 @app.post("/execute-research", response_model=ResearchResponse)
 async def execute_research(payload: ResearchRequest = Body(...)):
     query = payload.query
-    result = {}
+
+    # TODO: query analysis
+
+    # web search
+    google_search_tool = get_google_search_tool()
+    search_results = google_search_tool.func(query, 10)
+    logger.info(f"Google search results: {search_results}")
+
+    # TODO: content extraction
+
+    # TODO: info synthesis
+
+    result = {
+        "content": 'test',
+        "score": 0.95  # Replace with actual score
+    }
+
     return {"query": query, "result": result}
 
 if __name__ == "__main__":
