@@ -1,4 +1,5 @@
 from utils.logging import setup_logger
+from utils.analyze_query import analyze_query
 from schemas import ResearchRequest, ResearchResponse
 from tools.web_search_tool import get_google_search_tool
 from fastapi import FastAPI, Request, Body
@@ -35,11 +36,15 @@ async def execute_research(payload: ResearchRequest = Body(...)):
     query = payload.query
 
     # TODO: query analysis
-
+    query_analysis = analyze_query(query)
+    logger.info(f"Query analysis: {query_analysis}")
     # web search
-    google_search_tool = get_google_search_tool()
-    search_results = google_search_tool.func(query, 10)
-    logger.info(f"Google search results: {search_results}")
+    # google_search_tool = get_google_search_tool()
+    # search_results = google_search_tool.func(query, 10)
+    # logger.info(f"Google search results: {search_results}")
+
+    # TODO: ranking and relevance
+
 
     # TODO: content extraction
 
