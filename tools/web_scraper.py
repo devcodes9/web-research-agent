@@ -6,6 +6,7 @@ import time
 import asyncio
 from utils.logging import setup_logger
 
+
 logger = setup_logger("web_scraper")
 class ScrapeError(Exception):
     """Custom exception for scraping errors."""
@@ -13,12 +14,22 @@ class ScrapeError(Exception):
         super().__init__(message)
         logger.error(message)
 
+logger = setup_logger("web_scraper")
+
 async def allowed_to_scrape(url: str) -> bool:
     parsed = urlparse(url)
+    robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
     rp = robotparser.RobotFileParser()
-    rp.set_url(f"{parsed.scheme}://{parsed.netloc}/robots.txt")
-    rp.read()
-    return rp.can_fetch("*", url)
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(robots_url)
+            robots_txt = response.text
+            rp.parse(robots_txt.splitlines())
+            return rp.can_fetch("*", url)
+    except Exception as e:
+        logger.error(f"Error reading robots.txt from {robots_url}: {e}")
+        return False
 
 async def fetch_page(url: str, retries: int = 3, backoff: float = 1.0) -> str:
     for i in range(retries):

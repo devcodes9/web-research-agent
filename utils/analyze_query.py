@@ -11,6 +11,8 @@ def analyze_query(query: str) -> Dict:
     """
     Analyze the query using Azure OpenAI to understand intent, components, and information type.
     """
+    # also add to prompt to return intent as harmful if it is something which should not be searched
+    # or is not allowed to be searched
     prompt = f"""
     You are a query analysis tool. Given a research query, perform the following:
     1. Identify the intent behind the query (e.g., factual, exploratory, news, opinion, historical data).
