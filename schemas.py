@@ -6,8 +6,10 @@ class ResearchRequest(BaseModel):
 
 class Document(BaseModel):
     content: str
-    score: float
-    # not decided yet
+    sources: Optional[List[HttpUrl]] = Field(
+        default_factory=list,
+        description="List of URLs where the content was found"
+    )
 
 class ResearchResponse(BaseModel):
     query: str

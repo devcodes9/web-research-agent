@@ -65,7 +65,7 @@ async def execute_research(payload: ResearchRequest = Body(...)):
         snippets = [r.get("snippet") for r in results]
         logger.info(f"{sq} => URLs: {urls}")
 
-         # TODO: ranking and relevance of urls (maybe just top )
+         # TODO: ranking and relevance of urls (maybe just top 5)
         for url in urls:
             if not await allowed_to_scrape(url):
                 logger.warning(f"Blocked by robots.txt: {url}")
@@ -141,7 +141,7 @@ async def execute_research(payload: ResearchRequest = Body(...)):
 
     return {
         "query": query,
-        "result": {"content": answer, "sources": sources, "score": "50" }
+        "result": {"content": answer, "sources": sources }
     }
 
 if __name__ == "__main__":
