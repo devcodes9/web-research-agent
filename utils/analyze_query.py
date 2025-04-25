@@ -4,7 +4,6 @@ from typing import Dict
 from langchain.schema import HumanMessage
 from utils.get_llm import get_llm
 from utils.logging import setup_logger
-# Initialize Azure OpenAI LLM
 
 logger = setup_logger("analyze_query")
 def analyze_query(query: str) -> Dict:
