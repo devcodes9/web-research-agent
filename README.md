@@ -36,11 +36,12 @@ The project is organized into several key components:
   - `get_relevant_urls.py`: Selects the most relevant URLs from search results.
 - **`tools/`**: Contains tools for web searching, content analysis, web scraping, and result aggregation.
   - `web_search_tool.py`: Integrates with the Google Search API.
-  - `content_analyzer_tool.py`: Analyzes scraped content to extract relevant chunks.
+  - `content_analyzer_tool.py`: Analyzes scraped content to extract relevant chunks using a vector store.
   - `web_scraper_tool.py`: Scrapes content from web pages while respecting `robots.txt`.
   - `result_aggregator_tool.py`: Aggregates relevant content into a final answer.
 - **`schemas.py`**: Defines the request and response models for the API.
-- **`tests/`**: Contains unit and integration tests to ensure the agent works correctly.
+- **`test_mock.py`**: Contains execute-research test to ensure the agent works correctly.
+- **Chroma DB**: Used as a vector database to store and retrieve embeddings for relevance ranking.
 
 ---
 
@@ -50,9 +51,9 @@ The agent follows a step-by-step process to handle a research query:
 
 1. **Query Analysis**: The query is analyzed using an LLM to determine its intent, break it into subqueries (if complex), and identify the type of information needed.
 2. **Web Search**: The agent performs a web search using the Google Search API to find relevant URLs and snippets.
-3. **URL Selection**: Using embeddings, the agent selects the top `M` most relevant URLs from the search results.
+3. **URL Selection**: Using embeddings, the agent selects the top `M` most relevant URLs from the search results. Chroma DB is used to store and retrieve embeddings efficiently.
 4. **Web Scraping**: The agent scrapes content from the selected URLs, respecting `robots.txt` and handling retries for failed requests.
-5. **Content Analysis**: The scraped content is analyzed to extract relevant chunks based on the query.
+5. **Content Analysis**: The scraped content is analyzed to extract relevant chunks based on the query. A vector store (Chroma DB) is used to store the document embeddings, and the `get_relevant_documents` method retrieves the most relevant chunks for the query.
 6. **Result Aggregation**: The relevant chunks are aggregated into a coherent answer, and sources are compiled.
 7. **Response**: The final answer and sources are returned to the user.
 
@@ -116,8 +117,11 @@ The agent connects to and uses several external tools and libraries:
 - **Google Search API**: Used for performing web searches. The `get_google_search_tool` function initializes the search tool, which is then used to fetch search results for the query.
 - **BeautifulSoup**: Used in the `web_scraper_tool` to parse HTML and extract text content from web pages.
 - **httpx**: An asynchronous HTTP client used for making requests to fetch web pages and check `robots.txt`.
+- **AzureOpenAIEmbeddings**: The agent uses Azure OpenAI's embedding service to generate vector representations of the query and snippets for relevance ranking. These embeddings are stored and retrieved using Chroma DB.
+- **AzureOpenAI**: The agent uses Azure OpenAI's LLM for query analysis, content generation, and result aggregation. It powers the `analyze_query` and `run_result_aggregator_tool` functions.
 - **RobotFileParser**: Ensures that the agent respects `robots.txt` rules when scraping websites.
 - **Embeddings**: The agent uses an embedding service (e.g., OpenAI embeddings) to generate vector representations of the query and snippets for relevance ranking.
+- **Chroma DB**: A vector database used to store and retrieve embeddings efficiently during the URL selection process and content analysis. The `get_relevant_documents` method is used to retrieve the most relevant chunks for the query.
 
 These tools are integrated via modular functions in the `tools/` and `utils/` directories, making it easy to swap or update them if needed.
 
@@ -204,14 +208,9 @@ For invalid queries, the response will include an error message:
 ---
 
 ## Testing
+Tests the end-to-end functionality of the `/execute-research` endpoint.
 
-The project includes a suite of tests to ensure correctness:
-
-- **Unit Tests**: Test individual components (e.g., `analyze_query`, `get_relevant_urls`).
-- **Integration Tests**: Test the end-to-end functionality of the `/execute-research` endpoint.
-- **Error Handling Tests**: Verify that the agent handles errors gracefully.
-
-To run the tests, use:
+To run the test, use:
 
 ```bash
 pytest test_mock.py
