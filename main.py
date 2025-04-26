@@ -60,7 +60,7 @@ async def execute_research(payload: ResearchRequest = Body(...)):
     google_search_tool = get_google_search_tool()
 
     search_results = []
-    for sq in [query]: # It should loop through subqueries (for better results), but due to API quota, we are using only the query
+    for sq in subqueries:
         results = google_search_tool.func(sq, num_results=10)
         for r in results:
             snippet = r.get("snippet", r.get("title", ""))
