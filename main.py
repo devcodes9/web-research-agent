@@ -2,7 +2,7 @@ from utils.logging import setup_logger
 from utils.analyze_query import analyze_query
 from schemas import ResearchRequest, ResearchResponse
 from tools.web_search_tool import get_google_search_tool
-from tools.content_analyzer import run_content_analyzer_tool
+from tools.content_analyzer_tool import run_content_analyzer_tool
 from tools.web_scraper_tool import run_web_scraper_tool
 from tools.result_aggregator_tool import run_result_aggregator_tool
 from fastapi import FastAPI, Request, Body
@@ -11,6 +11,7 @@ from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 from utils.get_embeddings import get_embeddings
 from utils.get_relevant_urls import get_relevant_urls
+import os
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -81,4 +82,4 @@ async def execute_research(payload: ResearchRequest = Body(...)):
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=os.getenv('PORT', 8000))
