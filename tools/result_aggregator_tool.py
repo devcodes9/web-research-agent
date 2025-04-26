@@ -15,6 +15,11 @@ def run_result_aggregator_tool(relevant_chunks, query, query_analysis):
         "5. Cite sources inline using the provided URLs." 
         f"6. Adhere to the user's intent: {query_analysis.get('intent', 'research')} and deliver the type of information requested: {query_analysis.get('information_type', 'research')}.\n"
         "7. If there is conflicting information across the sources (e.g., different values or opinions), identify the contradictions, indicate the range of values or perspectives, and provide the most likely correct answer based on the frequency or reliability of the sources. Include inline citations to the sources (e.g., [Source 1]) so users can trace the information\n"
+        "8. When you display any collection of facts or figures in a table, use a proper Markdown table. Make sure the number of pipes matches your columns."
+         "For example:\n\n"
+  "| Rank | Title   | Gross (₹crore) | Sources |\n"
+  "|------|---------|----------------|---------|\n"
+  "| 1    | XYZ |        783–807 | Wikipedia, Enigmatic Horizon |\n\n"
     )
 
     context_text = "\n\n".join(

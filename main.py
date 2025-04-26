@@ -44,7 +44,15 @@ async def execute_research(payload: ResearchRequest = Body(...)):
 
     # query analysis
     query_analysis = analyze_query(query)
-
+    if query_analysis.get("intent") == "invalid":
+        return {
+            "query": query,
+            "result": {
+                "content": query_analysis.get("reason", "Invalid query"),
+                "sources": []
+            }
+        }
+    
     logger.info(f"Query analysis: {query_analysis}")
     subqueries = query_analysis.get("subqueries", [query])
 

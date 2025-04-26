@@ -18,6 +18,7 @@ def analyze_query(query: str) -> Dict:
     2. Break down the query into subqueries if it is complex (comma-separated list).
     3. Identify the type of information needed (facts, opinions, recent news, historical data).
     4. Formulate an effective search strategy based on the query type.
+    5. If the query is nonsensical, irrelevant, or harmful, classify the intent as "invalid" and provide an appropriate reason.
 
     Respond with a JSON object in the following format:
     {{
@@ -25,6 +26,7 @@ def analyze_query(query: str) -> Dict:
         "subqueries": ["<subquery1>", "<subquery2>", ...],
         "information_type": "<information_type>",
         "search_strategy": "<search_strategy>"
+        "reason": "<reason>"  # Include this field only if the intent is "invalid"
     }}
 
     Query: "{query}"
