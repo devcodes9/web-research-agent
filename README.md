@@ -2,6 +2,9 @@
 
 This project implements a web research agent that processes user queries, performs web searches, scrapes relevant content, analyzes it, and returns a coherent answer with sources. The agent is built using FastAPI and leverages various tools and utilities to handle different stages of the research process.
 
+Give it a try yourself by visiting the live demo:
+[**https://web-research-ui.vercel.app/**](https://web-research-ui.vercel.app/)
+
 ---
 
 ## Table of Contents
