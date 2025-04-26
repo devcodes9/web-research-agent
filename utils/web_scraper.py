@@ -6,7 +6,6 @@ import time
 import asyncio
 from utils.logging import setup_logger
 
-
 logger = setup_logger("web_scraper")
 class ScrapeError(Exception):
     """Custom exception for scraping errors."""
