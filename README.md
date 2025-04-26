@@ -1,6 +1,6 @@
 # Web Research Agent
 
-This project implements a web research agent that processes user queries, performs web searches, scrapes relevant content, analyzes it, and returns a coherent answer with sources. The agent is built using FastAPI and leverages various tools and utilities to handle different stages of the research process.
+This project implements a web research agent that processes user queries, performs web searches, scrapes relevant content, analyzes it, and returns a coherent answer with sources. The agent is built using **FastAPI** for the backend, **Chroma DB** for vector storage, **Azure OpenAI** for embeddings and LLM-based query analysis, and integrates tools like **LangChain**, **Google Search API**, **BeautifulSoup**, and **httpx** for web scraping and search functionalities.
 
 Give it a try yourself by visiting the live demo:
 [**https://web-research-ui.vercel.app/**](https://web-research-ui.vercel.app/)
